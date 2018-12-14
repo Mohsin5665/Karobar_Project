@@ -40,7 +40,7 @@ public class ItemListingActivty extends AppCompatActivity {
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.listing_recyclerview);
+        setContentView(R.layout.activity_main);
 
         recyclerView = findViewById(R.id.l_recycler);
         recyclerView.setHasFixedSize(true);

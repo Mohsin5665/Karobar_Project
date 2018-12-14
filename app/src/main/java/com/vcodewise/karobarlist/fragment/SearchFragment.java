@@ -431,12 +431,11 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                                         o.getString("name"),
                                         o.getString("image")
 
-
                                 );
                                 listitem.add(list);
                             }
 
-                            Categories_Adapter adapter = new Categories_Adapter(listitem, SearchFragment.this);
+                            Categories_Adapter adapter = new Categories_Adapter(listitem, getActivity());
                             rv.setAdapter(adapter);
 
                         } catch (JSONException e) {

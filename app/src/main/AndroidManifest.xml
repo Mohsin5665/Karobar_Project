@@ -26,6 +26,11 @@
             android:name=".activities.MainActivity"
             android:screenOrientation="portrait">
         </activity>
+
+        <activity
+            android:name=".activities.ItemListingActivty"
+            android:screenOrientation="portrait">
+        </activity>
     </application>
 
 </manifest>
