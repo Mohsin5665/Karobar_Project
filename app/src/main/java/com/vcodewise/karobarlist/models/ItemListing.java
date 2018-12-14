@@ -4,6 +4,9 @@ public class ItemListing {
 
     private String categoryName;
     private String address;
+    private float rating;
+    private int noofReviews;
+    private String ImageURL;
 
     public ItemListing(String categoryName, String address, float rating, long noofReviews, String imageURL) {
         this.categoryName = categoryName;
@@ -13,9 +16,7 @@ public class ItemListing {
         ImageURL = imageURL;
     }
 
-    private float rating;
-    private int noofReviews;
-    private String ImageURL;
+
 
 
 

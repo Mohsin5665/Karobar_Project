@@ -14,11 +14,12 @@ import com.bumptech.glide.Glide;
 import com.vcodewise.karobarlist.R;
 import com.vcodewise.karobarlist.models.ItemListing;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ItemListing_Adapter extends RecyclerView.Adapter<ItemListing_Adapter.ViewHolder> {
 
-    private List<ItemListing> listings;
+    private List<ItemListing> listings= new ArrayList<>();
     Context context;
 
     public ItemListing_Adapter(List<ItemListing> listings, Context context) {

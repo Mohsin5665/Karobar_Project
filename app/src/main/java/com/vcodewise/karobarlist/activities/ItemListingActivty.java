@@ -3,6 +3,7 @@ package com.vcodewise.karobarlist.activities;
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
@@ -36,15 +37,19 @@ public class ItemListingActivty extends AppCompatActivity {
     private RecyclerView.Adapter adapter;
     private RecyclerView recyclerView;
     private List<ItemListing> itemlist;
+    String id;
 
     protected void onCreate(final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        setContentView(R.layout.activity_main);
+       // setContentView(R.layout.listing_recyclerview);
 
         recyclerView = findViewById(R.id.l_recycler);
-        recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        recyclerView.setHasFixedSize(true);
+//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+
+        Intent intent = getIntent();
+        id = intent.getStringExtra("id");
 
         itemlist = new ArrayList<>();
 
@@ -76,7 +81,7 @@ public class ItemListingActivty extends AppCompatActivity {
                                         o.getString("category"),
                                         o.getString("address"),
                                         o.getInt("total_reviews"),
-                                        o.getLong("review_ratings"),
+                                        o.getInt("review_ratings"),
                                         o.getString("image")
 
                                 );

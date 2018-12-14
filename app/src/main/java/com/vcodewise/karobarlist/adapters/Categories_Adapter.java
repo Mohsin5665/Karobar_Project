@@ -24,15 +24,14 @@ import java.util.List;
 public class Categories_Adapter extends RecyclerView.Adapter<Categories_Adapter.ViewHolder> {
 
     private List<Categories_list> listdata;
-//    SearchFragment searchFragment;
+  SearchFragment searchFragment;
+  //Activity activity;
 //    Context context;
-    Activity activity;
 
-    public Categories_Adapter(List<Categories_list> list, Context ctx) {
+    public Categories_Adapter(List<Categories_list> list, SearchFragment ctx) {
         this.listdata = list;
-        this.activity = (Activity) ctx;
+        this.searchFragment =  ctx;
      //  this.context = ctx;
-     //   activity=(Activity)context;
     }
 
 
@@ -51,19 +50,19 @@ public class Categories_Adapter extends RecyclerView.Adapter<Categories_Adapter.
 
         holder.name.setText(listdata.get(position).getName());
       // Glide.with(context).load(listdata.get(position).getImageUrl()).into(holder.image);
-        Glide.with(activity).load(listdata.get(position).getImageUrl()).into(holder.image);
+        Glide.with(searchFragment).load(listdata.get(position).getImageUrl()).into(holder.image);
 
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent = new Intent(activity.getApplication(),ItemListingActivty.class);
+                
+                Intent intent = new Intent(searchFragment.getContext(),ItemListingActivty.class);
                 intent.putExtra("id",listdata.get(position).getId());
-
-                activity.startActivity(intent);
+                
+                searchFragment.startActivity(intent);
 
             }
         });
-
     }
 
     @Override
