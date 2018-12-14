@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:drawable="@android:drawable/ic_search_category_default" android:state_pressed="true" /> <!-- pressed -->
+    <item android:color="@android:drawable/ic_search_category_default" android:state_selected="true" /> <!-- selected -->
+    <item android:color="@android:drawable/ic_search_category_default" /> <!-- default -->
+</selector>
