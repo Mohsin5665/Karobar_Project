@@ -13,8 +13,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.vcodewise.karobarlist.R;
-import com.vcodewise.karobarlist.activities.ItemListingActivty;
+
 import com.vcodewise.karobarlist.activities.MainActivity;
+import com.vcodewise.karobarlist.fragment.ItemListFragment;
 import com.vcodewise.karobarlist.fragment.SearchFragment;
 import com.vcodewise.karobarlist.models.Categories_list;
 
@@ -55,11 +56,10 @@ public class Categories_Adapter extends RecyclerView.Adapter<Categories_Adapter.
         holder.image.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                
-                Intent intent = new Intent(searchFragment.getContext(),ItemListingActivty.class);
+
+                Intent intent = new Intent(MainActivity., ItemListFragment.class);
                 intent.putExtra("id",listdata.get(position).getId());
-                
-                searchFragment.startActivity(intent);
+
 
             }
         });

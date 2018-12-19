@@ -1,8 +1,6 @@
 package com.vcodewise.karobarlist.fragment;
 
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -11,7 +9,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -20,8 +17,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -38,12 +35,9 @@ import com.vcodewise.karobarlist.MyApplication;
 import com.vcodewise.karobarlist.R;
 import com.vcodewise.karobarlist.adapters.Categories_Adapter;
 import com.vcodewise.karobarlist.adapters.CustomHireAdapter;
-import com.vcodewise.karobarlist.adapters.ItemListing_Adapter;
-import com.vcodewise.karobarlist.adapters.ItemWanted_Adapter;
 import com.vcodewise.karobarlist.models.BusinessItem;
 import com.vcodewise.karobarlist.models.Categories_list;
 import com.vcodewise.karobarlist.models.CategoryItem;
-import com.vcodewise.karobarlist.models.ItemListing;
 import com.vcodewise.karobarlist.utils.ClickableViewPager;
 import com.vcodewise.karobarlist.utils.DataHolder;
 
@@ -74,7 +68,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
     private ImageView leftArrow, rightArrow;
     private ClickableViewPager mGalleryPager;
     Context context;
-
+    private  TextView textView;
+    private Spinner spinner;
 
     public SearchFragment() {
         // Required empty public constructor
@@ -127,6 +122,9 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
         rv.setHasFixedSize(true);
         rv.setLayoutManager(new GridLayoutManager(context, 3));
         listitem = new ArrayList<>();
+        textView = (TextView)view.findViewById(R.id.spinner);
+
+        spinner = (Spinner)view.findViewById(R.id.spinner_size);
 
         loadRecyclerViewData();
 
@@ -157,7 +155,6 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                             item.setTitle(category.getString("name"));
                             DataHolder.getInstance().getCategoryItemList().add(item);
 
-                            DataHolder.getInstance().getCategoryItemList().add(item);
                         }
 
                         selectedWantedItem = 0;
@@ -273,11 +270,15 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                                     } else {
                                         item.setNumber(business.getString("mobile"));
                                     }
+//                                    item.setRating(business.getLong("review_ratings"));
+//                                    item.setNoofRating(business.getInt("total_reviews"));
+
                                     item.setRating(i + 1.0f);
                                     item.setNoofRating(i + 2);
                                     item.setNoofReviews(i + 3);
                                     item.setFav(i / 2 == 0);
                                     DataHolder.getInstance().getBusinessItemList().add(item);
+
                                 }
 
                                 CustomHireAdapter mCustomListAdapter = new CustomHireAdapter(getActivity(), DataHolder.getInstance().getBusinessItemList());
@@ -363,7 +364,7 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
             MyApplication.imageLoader.displayImage(item.getImageUrl(), imageView, mDisplayImageOptions, new SimpleImageLoadingListener() {
                 @Override
                 public void onLoadingStarted(String imageUri, View view) {
-                    //holder.mSpinner.setVisibility(View.VISIBLE);
+                  //  holder.mSpinner.setVisibility(View.VISIBLE);
                 }
 
                 @Override
@@ -394,8 +395,8 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
                     // holder.mSpinner.setVisibility(View.GONE);
                 }
             });
-//            txtTitle.setText(item.getTitle());
-//            txtNoofItems.setText(item.getNoofItems(category.getString("total_businesses") + ""));
+            txtTitle.setText(item.getTitle());
+            txtNoofItems.setText(item.getNoofItems());
 
             viewGroup.addView(view, 0);
             return view;
@@ -461,84 +462,5 @@ public class SearchFragment extends Fragment implements View.OnClickListener {
 
         RequestQueue requestQueue = Volley.newRequestQueue(getActivity().getApplicationContext());
         requestQueue.add(stringRequest);
-    }
-
-    public class ItemListingActivty extends AppCompatActivity {
-
-        private  String URL_Web = "http://karobarlist.xtechnos.com/api/businesses";
-        private RecyclerView.Adapter adapter;
-        private RecyclerView recyclerView;
-        private List<ItemListing> itemlist;
-        String id;
-
-        protected void onCreate(final Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-
-            // setContentView(R.layout.listing_recyclerview);
-
-            recyclerView = findViewById(R.id.l_recycler);
-//        recyclerView.setHasFixedSize(true);
-//        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-            Intent intent = getIntent();
-            id = intent.getStringExtra("id");
-
-            itemlist = new ArrayList<>();
-
-
-            loadRecyclerViewData();
-        }
-
-        private void loadRecyclerViewData() {
-
-            final ProgressDialog progressDialog = new ProgressDialog(this);
-            progressDialog.setMessage("Loading Data...");
-            progressDialog.show();
-
-            StringRequest stringRequest = new StringRequest(Request.Method.GET, URL_Web,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            progressDialog.dismiss();
-                            try {
-                                JSONObject jsonObject = new JSONObject(response);
-                                JSONObject data = jsonObject.getJSONObject("data");
-                                JSONArray array = data.getJSONArray("businesses");
-
-                                for (int i = 0; i < array.length(); i++) {
-
-                                    JSONObject o = array.getJSONObject(i);
-                                    ItemListing list = new ItemListing(
-
-                                            o.getString("category"),
-                                            o.getString("address"),
-                                            o.getInt("total_reviews"),
-                                            o.getLong("review_ratings"),
-                                            o.getString("image")
-
-                                    );
-                                    itemlist.add(list);
-                                }
-
-                                adapter = new ItemListing_Adapter(itemlist, ItemListingActivty.this);
-                                recyclerView.setAdapter(adapter);
-
-                            } catch (JSONException e) {
-                                e.printStackTrace();
-                                //  Toast.makeText(com.vcodewise.karobarlist.activities.ItemListingActivty.this, "Nothing is Available For Time Being", Toast.LENGTH_LONG).show();
-                            }
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    progressDialog.dismiss();
-                    Toast.makeText(getApplicationContext(), error.getMessage(), Toast.LENGTH_LONG).show();
-                }
-            });
-
-            RequestQueue requestQueue = Volley.newRequestQueue(this);
-            requestQueue.add(stringRequest);
-        }
     }
 }
